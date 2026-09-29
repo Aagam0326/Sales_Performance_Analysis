@@ -1,0 +1,13 @@
+__pycache__/
+.ipynb_checkpoints/
+.venv/
+venv/
+*.py[cod]
+.DS_Store
+data/processed/*.csv
+data/processed/*.parquet
+reports/figures/*.png
+reports/figures/*.html
+reports/metrics.json
+.sales/
+sales/
