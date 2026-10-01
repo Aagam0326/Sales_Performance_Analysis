@@ -1,229 +1,183 @@
-# ✈️ Airline Delay Prediction System
+# 📊 Sales Performance Analysis & Forecasting
 
-A machine learning project that predicts whether a flight will be delayed, built on historical airline operational data using an **XGBoost classifier** — with an interactive **Streamlit** app for live predictions.
+An end-to-end sales analytics project — data cleaning, exploratory analysis, KPI dashboards, time-series forecasting, and a machine learning model with SHAP-based interpretability — built on the Superstore retail dataset.
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
-[![XGBoost](https://img.shields.io/badge/Model-XGBoost-orange.svg)](https://xgboost.readthedocs.io/)
-[![Streamlit](https://img.shields.io/badge/App-Streamlit-FF4B4B.svg)](https://streamlit.io/)
+[![XGBoost](https://img.shields.io/badge/Model-XGBoost%20%7C%20SARIMA-orange.svg)](https://xgboost.readthedocs.io/)
+[![SHAP](https://img.shields.io/badge/Explainability-SHAP-9cf.svg)](https://shap.readthedocs.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ---
 
 ## Table of Contents
 
-- [Project Overview](#-project-overview)
-- [Demo](#️-demo)
-- [Tech Stack](#️-tech-stack)
+- [Description](#-description)
 - [Project Structure](#-project-structure)
+- [Tech Used](#️-tech-used)
 - [Dataset](#-dataset)
 - [Exploratory Data Analysis](#-exploratory-data-analysis)
-- [Model](#-model)
-- [Current Performance](#-current-performance)
-- [Streamlit App](#️-streamlit-app)
+- [Models Used](#-models-used)
+- [Performance](#-performance)
 - [Roadmap](#-roadmap)
 - [Author](#-author)
 - [License](#-license)
+- [Acknowledgements](#-acknowledgements)
 
 ---
 
-## 📌 Project Overview
+## 📌 Description
 
-Flight delays are costly for airlines and frustrating for passengers. This project analyzes airline operational data — carrier, route, scheduled departure time, distance, and day of week — to predict the likelihood of a delay before it happens.
+Retail businesses generate rich transactional data, but the real value comes from turning it into decisions: which categories are actually profitable, where discounting is eroding margin, what next quarter's revenue will likely look like, and which orders are at risk of being unprofitable.
 
-**Current status:** core pipeline and model are working end-to-end; performance tuning and explainability are in active progress (see [Roadmap](#-roadmap)).
+This project covers the full analytics pipeline:
 
-The project covers:
-
-- Data cleaning and feature engineering
-- Exploratory Data Analysis (EDA)
-- XGBoost model training and hyperparameter tuning
-- Model evaluation with visualizations
-- An interactive Streamlit web app for live predictions
-
----
-
-## 🖼️ Demo
-
-| Dashboard | Prediction Output |
-|---|---|
-| ![Dashboard](images/dashboard.png) | ![Prediction](images/prediction.png) |
-
-
----
-
-## 🛠️ Tech Stack
-
-| Category | Technologies |
-|---|---|
-| Language | Python |
-| Machine Learning | Scikit-learn, XGBoost |
-| Data Analysis | Pandas, NumPy |
-| Visualization | Matplotlib, Seaborn, Plotly |
-| Web App | Streamlit |
-| Model Serialization | Joblib / Pickle |
-| Notebook Environment | Jupyter |
+- **Data cleaning** — type fixes, deduplication, outlier and validity checks
+- **Exploratory Data Analysis** — category/region/segment breakdowns, seasonality, discount-vs-profit relationship
+- **KPI dashboard** — revenue, profit margin, AOV, MoM/YoY growth, repeat-customer rate
+- **Forecasting** — SARIMA and Holt-Winters models compared against a seasonal-naive baseline
+- **ML + explainability** — Random Forest / XGBoost predicting order-level profitability, explained with SHAP
 
 ---
 
 ## 📂 Project Structure
 
 ```
-Airline_Delay_Predictor/
-│
-├── data/
-│   ├── raw_data/
-│   ├── raw_data_documentation.txt
-│   ├── train_sets_documentation.txt
-│   ├── train.csv
-│   └── test.csv
-│
-├── models/
-│   └── airline_delay_model.pkl
-│
-├── notebooks/
-│   └── eda.ipynb
-│
-├── outputs/
-│   ├── best_params.json
-│   ├── metrics.json
-│   ├── model_evaluation.png
-│   └── tuning_summary.json
-│
-├── images/
-│   ├── dashboard.png
-│   └── prediction.png
-│
-├── src/
-│   ├── backend/
-│   └── frontend/
-│       └── app.py
-│
+sales-performance-analysis/
 ├── README.md
 ├── requirements.txt
-└── .gitignore
+├── .gitignore
+│
+├── data/
+│   ├── raw/                   # original Superstore dataset (untouched)
+│   └── processed/              # cleaned dataset
+│
+├── notebooks/
+│   ├── 01_data_loading_cleaning.ipynb
+│   ├── 02_eda.ipynb
+│   ├── 03_kpi_dashboard.ipynb
+│   ├── 04_forecasting.ipynb
+│   └── 05_ml_model_shap.ipynb
+│
+├── src/
+│   ├── __init__.py
+│   ├── data_cleaning.py
+│   ├── kpis.py
+│   ├── forecasting.py
+│   ├── modeling.py
+│   └── run_analysis.py
+│
+├── reports/
+│   ├── figures/                # exported charts (used in this README)
+│   ├── insights.md             # business recommendations backed by numbers
+│   └── kpi_summary.csv
+│
+└── images/                     # standalone screenshots for the README
 ```
+
+---
+
+## 🛠️ Tech Used
+
+| Category | Technologies |
+|---|---|
+| Language | Python |
+| Data Analysis | Pandas, NumPy |
+| Visualization | Matplotlib, Seaborn |
+| Forecasting | Statsmodels (SARIMA, Holt-Winters) |
+| Machine Learning | Scikit-learn, XGBoost |
+| Explainability | SHAP |
+| Notebook Environment | Jupyter |
 
 ---
 
 ## 📊 Dataset
 
-The dataset contains airline operational records, including:
+**Source:** [Superstore Sales dataset (Kaggle)](https://www.kaggle.com/datasets/vivek468/superstore-dataset-final)
 
-- Airline carrier
-- Departure & arrival airport
-- Scheduled departure time
-- Distance traveled
-- Day of week
-- Flight delay status (target)
+Order-level retail transaction data covering roughly 4 years, including:
 
-**Target variable**
+- Order and ship dates, ship mode
+- Customer, segment, region, state, city
+- Product category, sub-category, product name
+- Sales, quantity, discount, profit
 
-- `0` → On-time flight
-- `1` → Delayed flight
+**Summary**
+
+| Field | Description |
+|---|---|
+| `sales` | Revenue for the order line (USD) |
+| `profit` | Profit for the order line (USD) — can be negative |
+| `discount` | Discount applied, 0–1 |
+| `category` / `sub_category` | Product classification |
+| `segment` | Consumer / Corporate / Home Office |
+| `region` | East / West / Central / South |
+
+Engineered features added during cleaning: `order_year`, `order_month`, `order_year_month`, `order_quarter`, `profit_margin`, `fulfillment_days`.
 
 ---
 
 ## 🔍 Exploratory Data Analysis
 
-EDA was used to:
+Key questions explored in [`02_eda.ipynb`](notebooks/02_eda.ipynb):
 
-- Identify delay patterns across carriers, routes, and times
-- Analyze feature distributions
-- Detect missing values
-- Study correlations between features
-- Understand class imbalance (delays are the minority class)
+- Which categories and sub-categories drive revenue vs. which are actually losing money
+- How profit margin varies by region and segment
+- Monthly/quarterly seasonality in sales
+- The discount threshold at which average profit turns negative
+- Top and bottom performing products
+- Customer repeat-purchase rate
 
-![Delay Distribution by Carrier](images/eda_carrier_delays.png)
+![Sales & Profit by Category](reports/figures/sales_profit_by_category.png)
+![Discount vs. Profit](reports/figures/discount_vs_profit.png)
 
-Full notebook: [`notebooks/eda.ipynb`](notebooks/eda.ipynb)
-
----
-
-## 🤖 Model
-
-**XGBoost Classifier** — chosen for:
-
-- Strong performance on tabular data
-- Fast training
-- Built-in handling of imbalanced classes (`scale_pos_weight`)
-- Good baseline accuracy with room to tune
-
-### Training pipeline
-
-1. Data cleaning
-2. Feature engineering
-3. Train/test split
-4. Categorical encoding
-5. Model training
-6. Hyperparameter tuning
-7. Evaluation
-8. Model saving
+Full write-up of the five non-obvious, quantified insights is in [`reports/insights.md`](reports/insights.md).
 
 ---
 
-## 📈 Current Performance
+## 🤖 Models Used
 
-| Metric | Score |
-|---|---|
-| Accuracy | 72% |
-| Precision (Delayed) | 35% |
-| Recall (Delayed) | 58% |
-| F1-score (Delayed) | 44% |
+**Forecasting** (monthly revenue):
+- Baseline: Seasonal Naive
+- SARIMA(1,1,1)(1,1,1,12)
+- Holt-Winters (triple exponential smoothing, additive trend + seasonality)
+- Evaluated on a time-based holdout using MAPE and RMSE
 
-```
-          precision    recall  f1-score   support
-
- On-time       0.88      0.75      0.81
- Delayed       0.35      0.58      0.44
-
-accuracy                           0.72
-```
-
-![Model Evaluation — Confusion Matrix & ROC Curve](outputs/model_evaluation.png)
-
-**Honest take:** accuracy looks fine, but the model is currently better at catching on-time flights than delays — precision on the "Delayed" class is the main thing being worked on next, since false positives are a real cost in deployment. Class imbalance handling and feature engineering are the planned next steps to improve this (see [Roadmap](#-roadmap)).
-
-Additional evaluation artifacts (tuning summary, best params) are saved in [`outputs/`](outputs/).
+**Classification** (order-line profitability — `profit > 0`):
+- Random Forest Classifier
+- XGBoost Classifier
+- 5-fold stratified cross-validation, evaluated on ROC-AUC, precision, recall, F1
+- SHAP TreeExplainer for feature-level interpretability (summary plot + dependence plots for discount and category)
 
 ---
 
-## 🖥️ Streamlit App
+## 📈 Performance
 
-The app lets users:
+| Forecasting Model | MAPE | RMSE |
+|---|---|---|
+| Seasonal Naive (baseline) | *fill in after running `04_forecasting.ipynb`* | |
+| SARIMA | | |
+| Holt-Winters | | |
 
-- Enter flight details
-- Get a delay probability prediction
-- View model outputs and basic airline insights
+| Classification Model | ROC-AUC | Precision | Recall | F1 |
+|---|---|---|---|---|
+| Random Forest | *fill in after running `05_ml_model_shap.ipynb`* | | | |
+| XGBoost | | | | |
 
-![Streamlit App Screenshot](images/streamlit_app.png)
+![Forecast vs. Actual](reports/figures/forecast_vs_actual.png)
+![SHAP Summary](reports/figures/shap_summary.png)
 
-### Run it locally
-
-```bash
-git clone https://github.com/Aagam0326/Airline_Delay_Prediction.git
-cd Airline_Delay_Predictor
-
-python -m venv venv
-source venv/bin/activate   # Windows: venv\Scripts\activate
-
-pip install -r requirements.txt
-
-streamlit run src/frontend/app.py
-```
+> Run notebooks 4 and 5 end to end and copy the printed metrics into the tables above — keeping real numbers here (not placeholders) is what makes this project credible on a resume.
 
 ---
 
 ## 🧭 Roadmap
 
-Planned next, in priority order:
-
-- [ ] Improve precision/recall on the "Delayed" class (class imbalance handling, feature engineering)
-- [ ] Add SHAP explainability for feature-level interpretability
-- [ ] Real-time flight data API integration
-- [ ] Docker support
-- [ ] Cloud deployment (Streamlit Community Cloud / Hugging Face Spaces)
-- [ ] CI/CD pipeline
-- [ ] MLflow experiment tracking
+- [ ] Fill in actual forecasting and classification metrics above
+- [ ] Add a lightweight Streamlit dashboard for interactive KPI exploration
+- [ ] Extend forecasting to per-category/per-region granularity
+- [ ] Add a SQL version of the KPI queries (`sql/kpi_queries.sql`) for the analytics-engineering angle
+- [ ] Deploy the KPI dashboard (Streamlit Community Cloud)
+- [ ] Add automated tests for `src/` modules
 
 ---
 
@@ -233,7 +187,6 @@ Planned next, in priority order:
 
 - GitHub: [@Aagam0326](https://github.com/Aagam0326)
 - LinkedIn: [Aagam Shah](https://www.linkedin.com/in/aagam-shah-v322006/)
-- Email: [Aagam Shah](aagamvshah0306@gmail.com)
 
 ---
 
@@ -245,4 +198,4 @@ This project is licensed under the MIT License — see [LICENSE](LICENSE).
 
 ## ⭐ Acknowledgements
 
-Built with Scikit-learn, XGBoost, Streamlit, and the broader open-source data science community.
+Dataset provided via Kaggle (Superstore Sales). Built with Pandas, Statsmodels, Scikit-learn, XGBoost, SHAP, and the broader open-source data science community.
