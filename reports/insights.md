@@ -6,4 +6,4 @@
 4. The three weakest sub-categories by total profit were **Tables ($-17,725), Bookcases ($-3,473), Supplies ($-1,189)**. Reprice, bundle, or renegotiate these lines.
 5. Regional margins varied from **7.9%** to **14.9%**. Allocate commercial attention to low-margin regions, not just high-revenue ones.
 6. **Holt-Winters** won the held-out forecast comparison with **22.59% MAPE**, a **7.9%** reduction versus seasonal naive (24.52%). Use it for monthly planning.
-7. The best profitability classifier was **Random Forest**, with held-out ROC-AUC **0.982**. Use it as a decision-support flag, not an automatic pricing rule.
+7. The best profitability classifier was **XGBoost**, with held-out ROC-AUC **0.982**. Use it as a decision-support flag, not an automatic pricing rule.

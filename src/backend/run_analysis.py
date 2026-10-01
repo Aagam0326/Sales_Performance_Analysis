@@ -8,13 +8,13 @@ import pandas as pd
 import seaborn as sns
 import plotly.express as px
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from src.data_cleaning import clean_superstore, save_cleaned_data
-from src.forecasting import fit_forecasts, monthly_sales
-from src.kpis import calculate_kpis, monthly_kpis
-from src.modeling import train_models
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from src.backend.data_cleaning import clean_superstore, save_cleaned_data
+from src.backend.forecasting import fit_forecasts, monthly_sales
+from src.backend.kpis import calculate_kpis, monthly_kpis
+from src.backend.modeling import train_models
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 FIGURES = ROOT / "reports" / "figures"
 
 
